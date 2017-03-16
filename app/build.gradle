@@ -45,21 +45,6 @@ dependencies {
 }
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.0.0"
-    }
-    plugins {
-        lite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                remove java
-            }
-            task.plugins {
-                lite { }
-            }
-        }
+        artifact = 'com.google.protobuf:protoc:3.0.0-alpha-3'
     }
 }
