@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
+
+ext {
+    supportLibraryVersion = '25.3.0'
+    protobufVersion = '3.2.0'
+}
 
 android {
     compileSdkVersion 25
@@ -13,6 +19,8 @@ android {
         testApplicationId "com.android.launcher3.tests"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    //sourceSets.main.proto { srcDir '../proto' }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -24,12 +32,34 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+
+    compile 'com.google.protobuf:protobuf-java:3.0.0'
     compile 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-2'
 
     testCompile 'junit:junit:4.12'
     compile project(':wallpaperPicker')
 //    androidTestCompile 'com.android.support.test:runner:0.5'
 //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+}
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.0.0"
+    }
+    plugins {
+        lite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                remove java
+            }
+            task.plugins {
+                lite { }
+            }
+        }
+    }
 }
